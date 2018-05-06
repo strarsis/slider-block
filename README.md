@@ -1,6 +1,6 @@
 This plugin provides a Gutenblock (for WordPress [Gutenberg](https://github.com/WordPress/gutenberg)) for a slider ([Swiper](http://idangero.us/swiper/) based).
 
-Please note that this is still alpa!
+Please note that this is still alpha!
 It is possible to place other blocks into the slider, even nesting the slider and view the resulting slider in frontend.
 
 Some features haven't been implemented yet like slider specific options or a separate slide block (currently commented out).
