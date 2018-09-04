@@ -8,6 +8,11 @@
     "eject": "cgb-scripts eject"
   },
   "dependencies": {
+    "@wordpress/blocks": "^2.0.1",
+    "@wordpress/components": "^2.0.1",
+    "@wordpress/editor": "^2.0.1",
+    "@wordpress/element": "^1.0.4",
+    "@wordpress/i18n": "^1.2.3",
     "cgb-scripts": "1.9.7",
     "classnames": "^2.2.5",
     "memize": "^1.0.5",

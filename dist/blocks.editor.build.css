@@ -1,18 +1,1 @@
-/**
- * #.# Common SCSS
- *
- * Can include things like variables and mixins
- * that are used across the project.
-*/
-/**
- * #.# Editor Styles
- *
- * CSS for just Backend enqueued after style.scss
- * which makes it higher in priority.
- */
-.wp-block-cgb-block-slider-block,
-.wp-block-cgb-block-slider-block .editor-block-list__layout {
-  min-height: 12rem; }
-
-.wp-block-cgb-block-slider-block .editor-block-list__layout {
-  border: 0.2rem solid grey; }
+.wp-block-cgb-block-slider-block,.wp-block-cgb-block-slider-block .editor-block-list__layout{min-height:12rem}.wp-block-cgb-block-slider-block .editor-block-list__layout{border:0.2rem solid grey}
