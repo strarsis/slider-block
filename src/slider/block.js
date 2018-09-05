@@ -14,7 +14,6 @@ import './editor.scss';
  * External dependencies
  */
 import { times } from 'lodash';
-import classnames from 'classnames';
 import memoize from 'memize';
 import React from 'react';
 import Swiper from 'react-id-swiper';
@@ -25,7 +24,6 @@ import Swiper from 'react-id-swiper';
 import { __, sprintf } from '@wordpress/i18n';
 import { PanelBody, RangeControl } from '@wordpress/components';
 import { Fragment } from '@wordpress/element';
-import { createBlock } from '@wordpress/blocks';
 import {
 	InspectorControls,
 	InnerBlocks,
