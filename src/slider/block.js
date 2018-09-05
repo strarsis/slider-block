@@ -21,13 +21,14 @@ import Swiper from 'react-id-swiper';
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
-import { PanelBody, RangeControl } from '@wordpress/components';
-import { Fragment } from '@wordpress/element';
-import {
+const { __, sprintf }       = wp.i18n;
+const { registerBlockType } = wp.blocks;
+const { PanelBody, RangeControl } = wp.components;
+const { Fragment } = wp.element;
+const {
 	InspectorControls,
 	InnerBlocks,
-} from '@wordpress/editor';
+} = wp.editor;
 
 
 /**
