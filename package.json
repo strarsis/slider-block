@@ -9,9 +9,26 @@
   },
   "dependencies": {
     "cgb-scripts": "1.9.7",
+    "classnames": "^2.2.6",
     "memize": "^1.0.5",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-id-swiper": "^1.6.3"
-  }
+  },
+  "description": "This plugin provides a Gutenblock (for WordPress [Gutenberg](https://github.com/WordPress/gutenberg)) for a slider ([Swiper](http://idangero.us/swiper/) based).",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kidunot89/slider-block.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kidunot89/slider-block/issues"
+  },
+  "homepage": "https://github.com/kidunot89/slider-block#readme",
+  "keywords": []
 }

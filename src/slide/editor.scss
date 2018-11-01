@@ -4,7 +4,263 @@
  * CSS for just Backend enqueued after style.scss
  * which makes it higher in priority.
  */
+.swiper-container {
 
-.wp-block-cgb-block-slide-block  {
-  border: 0.2rem solid grey;
+  .editor-block-list__block-edit {
+    margin: auto;
+  }
+
+  &.swiper-container-vertical > .editor-block-list__layout {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .editor-block-list__layout {
+    position: relative;
+    width: 100%;
+    background: #ccc;
+    min-height: 480px;
+    height: 100%;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: -webkit-transform;
+    -o-transition-property: transform;
+    transition-property: transform;
+    transition-property: transform, -webkit-transform;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+
+    .editor-block-list__block {
+      margin: 0.2em auto;
+    }
+
+  }
+
+  .swiper-container-android  .editor-block-list__block,
+  .editor-block-list__layout {
+    -webkit-transform: translate3d(0px, 0, 0);
+    transform: translate3d(0px, 0, 0);
+  }
+
+  &.swiper-container-multirow > .editor-block-list__layout {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  &.swiper-container-free-mode > .editor-block-list__layout {
+    -webkit-transition-timing-function: ease-out;
+    -o-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    margin: 0 auto;
+  }
+
+  &.swiper-container-autoheight > .editor-block-list__layout {
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -webkit-transition-property: height, -webkit-transform;
+    transition-property: height, -webkit-transform;
+    -o-transition-property: transform, height;
+    transition-property: transform, height;
+    transition-property: transform, height, -webkit-transform;
+  }
+
+  &.swiper-container-3d > .editor-block-list__layout,
+  &.swiper-container-3d .editor-block-list__block,
+  &.swiper-container-3d .swiper-slide-shadow-left,
+  &.swiper-container-3d .swiper-slide-shadow-right,
+  &.swiper-container-3d .swiper-slide-shadow-top,
+  &.swiper-container-3d .swiper-slide-shadow-bottom,
+  &.swiper-container-3d .swiper-cube-shadow {
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+
+  /* IE10 Windows Phone 8 Fixes */
+  &.swiper-container-wp8-horizontal > .editor-block-list__layout {
+    -ms-touch-action: pan-y;
+    touch-action: pan-y;
+  }
+
+  &.swiper-container-wp8-vertical > .editor-block-list__layout {
+    -ms-touch-action: pan-x;
+    touch-action: pan-x;
+  }
+
+  &.swiper-container-coverflow > .editor-block-list__layout {
+    /* Windows 8 IE 10 fix */
+    -ms-perspective: 1200px;
+  }
+
+  &.swiper-container-3d .swiper-slide-shadow-left,
+  &.swiper-container-3d .swiper-slide-shadow-right,
+  &.swiper-container-3d .swiper-slide-shadow-top,
+  &.swiper-container-3d .swiper-slide-shadow-bottom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  &.swiper-container-no-flexbox .editor-block-list__block {
+    float: left;
+  }
+
+  .editor-block-list__block {
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-transition-property: -webkit-transform;
+    transition-property: -webkit-transform;
+    -o-transition-property: transform;
+    transition-property: transform;
+    transition-property: transform, -webkit-transform;
+  }
+
+  /* Auto Height */
+  &.swiper-container-autoheight,
+  &.swiper-container-autoheight .editor-block-list__block {
+    height: auto;
+  }
+
+  &.swiper-container-3d .swiper-slide-shadow-left {
+    background-image: -webkit-gradient(linear, right top, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  }
+
+  &.swiper-container-3d .swiper-slide-shadow-right {
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  }
+
+  &.swiper-container-3d .swiper-slide-shadow-top {
+    background-image: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background-image: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  }
+
+  &.swiper-container-3d .swiper-slide-shadow-bottom {
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0)));
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  }
+
+  .swiper-slide-zoomed {
+    cursor: move;
+  }
+
+  &.swiper-container-fade.swiper-container-free-mode .editor-block-list__block {
+    -webkit-transition-timing-function: ease-out;
+    -o-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+
+  &.swiper-container-fade .editor-block-list__block {
+    pointer-events: none;
+    -webkit-transition-property: opacity;
+    -o-transition-property: opacity;
+    transition-property: opacity;
+  }
+
+  &.swiper-container-fade .editor-block-list__block .editor-block-list__block {
+    pointer-events: none;
+  }
+
+  &.swiper-container-fade .swiper-slide-active,
+  &.swiper-container-fade .swiper-slide-active .swiper-slide-active {
+    pointer-events: auto;
+  }
+  &.swiper-container-cube {
+    overflow: visible;
+  }
+  &.swiper-container-cube .editor-block-list__block {
+    pointer-events: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    z-index: 1;
+    visibility: hidden;
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.swiper-container-cube .editor-block-list__block .editor-block-list__block {
+    pointer-events: none;
+  }
+
+  &.swiper-container-cube.swiper-container-rtl .editor-block-list__block {
+    -webkit-transform-origin: 100% 0;
+    -ms-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+  }
+
+  &.swiper-container-cube .swiper-slide-active,
+  &.swiper-container-cube .swiper-slide-active .swiper-slide-active {
+    pointer-events: auto;
+  }
+
+  &.swiper-container-cube .swiper-slide-active,
+  &.swiper-container-cube .swiper-slide-next,
+  &.swiper-container-cube .swiper-slide-prev,
+  &.swiper-container-cube .swiper-slide-next + .editor-block-list__block {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  &.swiper-container-cube .swiper-slide-shadow-top,
+  &.swiper-container-cube .swiper-slide-shadow-bottom,
+  &.swiper-container-cube .swiper-slide-shadow-left,
+  &.swiper-container-cube .swiper-slide-shadow-right {
+    z-index: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  &.swiper-container-flip .editor-block-list__block {
+    pointer-events: none;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    z-index: 1;
+  }
+
+  &.swiper-container-flip .editor-block-list__block .editor-block-list__block {
+    pointer-events: none;
+  }
+
+  &.swiper-container-flip .swiper-slide-active,
+  &.swiper-container-flip .swiper-slide-active .swiper-slide-active {
+    pointer-events: auto;
+  }
+
+  &.swiper-container-flip .swiper-slide-shadow-top,
+  &.swiper-container-flip .swiper-slide-shadow-bottom,
+  &.swiper-container-flip .swiper-slide-shadow-left,
+  &.swiper-container-flip .swiper-slide-shadow-right {
+    z-index: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
 }
