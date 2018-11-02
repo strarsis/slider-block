@@ -89,6 +89,11 @@ registerBlockType( 'slider-block/slider', {
 					source: 'attribute',
 					attribute: 'data-direction',
 				},
+				height: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-height',
+				},
 				speed: {
 					type: 'string',
 					source: 'attribute',
@@ -157,6 +162,7 @@ registerBlockType( 'slider-block/slider', {
 				paginationType: 'bullets',
 				withScrollBar: false,
 				direction: 'horizontal',
+				height: 480,
 				speed: 300,
 				spaceBetween: 0,
 				slidesPerView: 1,

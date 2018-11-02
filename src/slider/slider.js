@@ -2,17 +2,18 @@
  * External dependencies
  */
 import classNames from 'classnames';
-import { each, times } from 'lodash';
+import { each, times, reduce } from 'lodash';
 import memoize from 'memize';
+import Swiper from 'react-id-swiper';
 
 /**
  * Internal dependencies
  */
 import Inspector, { getBoolean } from './slider-inspector';
-//import { initSwiper, watchSwiper, swiperEvent } from './swiper-init';
 
-const { Component, Fragment, createRef } = wp.element;
+const { Component, Fragment } = wp.element;
 const { InnerBlocks, BlockControls, BlockAlignmentToolbar } = wp.editor;
+const { toParams } = wp.swiper;
 
 const ALLOWED_BLOCKS = [ 'slider-block/slide' ];
 
@@ -20,7 +21,13 @@ const getSliderTemplate = memoize( ( slides ) => {
 	return times( slides, () => [ 'slider-block/slide' ] );
 } );
 
-export const toDOMAttrs = ( params ) => {
+/**
+ * Create dataset attributes for SaveContent
+ *
+ * @param {Object} params - block's params attribute
+ * @return {Object} - Formatted dataset
+ */
+const toDOMAttrs = ( params ) => {
 	const attrs = {};
 	each( params, ( value, key ) => {
 		const newKey = `data-${ key }`.toLowerCase();
@@ -30,10 +37,30 @@ export const toDOMAttrs = ( params ) => {
 	return attrs;
 };
 
+const AttrsToParams = ( params ) => {
+	return reduce( toDOMAttrs( params ), ( results, value, key ) => {
+		results[ key.substring( 5 ) ] = value;
+		return results;
+	}, {} );
+};
+
 const editSwiperParams = {
-	wrapperClass: 'editor-block-list__layout',
-	slideClass: 'editor-block-list__block',
-	init: false,
+	shouldSwiperUpdate: true,
+};
+
+const getSlideStyle = () => {
+	const styles = [
+		{ backgroundColor: '#112F41' },
+		{ backgroundColor: '#068587' },
+		{ backgroundColor: '#4FB99F' },
+		{ backgroundColor: '#F2B134' },
+		{ backgroundColor: '#ED553B' },
+	];
+
+	return {
+		...styles[ Math.floor( Math.random() * Math.floor( 5 ) ) ],
+		minHeight: '350px',
+	};
 };
 
 /*
@@ -43,84 +70,64 @@ const editSwiperParams = {
 export class edit extends Component {
 	constructor() {
 		super( ...arguments );
-		this.initializeSwiper = this.initializeSwiper.bind( this );
-		this.updateAlignment = this.updateAlignment.bind( this );
-		this.prev = this.prev.bind( this );
-		this.next = this.next.bind( this );
-		this.state = {};
-		this.element = createRef();
-	}
-
-	componentDidMount() {
-		this.initializeSwiper();
-	}
-
-	shouldComponentUpdate = ( nextProps ) => {
-		const { params, slides } = this.props.attributes;
-
-		if ( params[ 0 ] !== nextProps.attributes.params[ 0 ] ) {
-			return true;
-		}
-
-		if ( slides !== nextProps.attributes.slides ) {
-			return true;
-		}
-
-		return false;
+		this.swiperRef = this.swiperRef.bind( this );
+		this.swiperRebuild = this.swiperRebuild.bind( this );
+		this.swiper = null;
 	}
 
 	componentDidUpdate( prevProps ) {
 		const { params } = this.props.attributes;
+		const { params: nextParams } = prevProps.attributes;
 
-		if ( params[ 0 ] !== prevProps.attributes.params[ 0 ] ) {
-			if ( this.state.status === 'watching' ) {
-				const detail = {
-					id: this.state.id,
-					element: this.element.current,
-					params: editSwiperParams,
-				};
-				document.dispatchEvent( new window.CustomEvent( 'updateSwiper', { detail } ) );
-			}
+		if ( params !== nextParams ) {
+			this.swiperRebuild();
 		}
 	}
 
-	initializeSwiper() {
-		this.setState( {
-			...initSwiper( this.element.current, editSwiperParams ),
-			status: watchSwiper(),
-		} );
-	}
-
-	prev() {
-		const { swiper } = this.state;
-		if ( ! swiper ) {
-			return;
+	swiperRef( node ) {
+		if ( node ) {
+			this.swiper = node.swiper;
 		}
-		console.log( swiper );
-
-		swiper.slidePrev();
 	}
 
-	next() {
-		const { swiper } = this.state;
-		if ( ! swiper ) {
-			return;
-		}
-
-		console.log( swiper.slideNext );
-		swiper.slideNext();
-	}
-
-	updateAlignment( align ) {
-		this.props.setAttributes( { align } );
+	swiperRebuild() {
+		// No way to reinitialize yet.
+		// if ( this.swiper ) {
+		// 	this.swiper.destroy();
+		// }
 	}
 
 	render() {
-		const { attributes, setAttributes, className, customClassName } = this.props;
-		const { params: { 0: params }, slides, align } = attributes;
+		const {
+			attributes, setAttributes, className: blockClassName,
+			customClassName,
+		} = this.props;
 
+		const {
+			params,
+			slides,
+			align,
+		} = attributes;
+
+		const attrs = AttrsToParams( params[ 0 ] );
+
+		const className = classNames( blockClassName, customClassName );
+		const centered = {
+			position: 'absolute',
+			color: '#f4f4f4',
+			left: '50%',
+			top: '50%',
+			transform: 'translate(-50%, -50%)',
+			padding: '0',
+			margin: '0',
+		};
+		const swiperChildren = times( slides, i => (
+			<div style={ getSlideStyle() }>
+				<h2 style={ centered }>Slide { i + 1 }</h2>
+			</div>
+		) );
 		return (
-			<Fragment>
+			<div>
 				<BlockControls>
 					<BlockAlignmentToolbar
 						value={ align }
@@ -129,46 +136,16 @@ export class edit extends Component {
 						wideControlsEnabled
 					/>
 				</BlockControls>
-				<div
-					className={
-						classNames(
-							className,
-							'swiper-container',
-							customClassName,
-						)
-					}
-					{ ...toDOMAttrs( params ) }
-					ref={ this.element }
-				>
-					<InnerBlocks
-						template={ getSliderTemplate( slides ) }
-						templateLock="all"
-						allowedBlocks={ ALLOWED_BLOCKS }
-					/>
-
-					{ getBoolean( params.withPagination ) && <div className="swiper-pagination"></div> }
-
-					<div
-						role="button"
-						className="swiper-button-prev"
-						onClick={ this.prev }
-						onKeyDown={ this.prev }
-						tabIndex={ 0 }
-						style={ { zIndex: 10 } }
-					/>
-					<div
-						role="button"
-						className="swiper-button-next"
-						onClick={ this.next }
-						onKeyDown={ this.next }
-						tabIndex={ 0 }
-						style={ { zIndex: 10 } }
-					/>
-
-					{ getBoolean( params.withScrollBar ) && <div className="swiper-scrollbar"></div> }
-				</div>
+				<Swiper className={ className } ref={ this.swiperRef } { ...toParams( { dataset: attrs }, editSwiperParams ) }>
+					{ swiperChildren }
+				</Swiper>
+				<InnerBlocks
+					template={ getSliderTemplate( slides ) }
+					templateLock="all"
+					allowedBlocks={ ALLOWED_BLOCKS }
+				/>
 				<Inspector { ...{ attributes, setAttributes } } />
-			</Fragment>
+			</div>
 		);
 	}
 }

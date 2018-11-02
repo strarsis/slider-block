@@ -55,6 +55,7 @@ const inspector = ( { attributes, setAttributes } ) => {
 		paginationType,
 		withScrollBar,
 		direction,
+		height,
 		speed,
 		spaceBetween,
 		slidesPerView,
@@ -106,6 +107,14 @@ const inspector = ( { attributes, setAttributes } ) => {
 					options={ directions }
 					onChange={ setParam( 'direction' ) }
 					help={ __( 'Could be \'horizontal\' or \'vertical\' (for vertical slider).' ) }
+				/>
+				<TextControl
+					label={ __( 'Slider Height' ) }
+					disabled={ direction !== 'vertical' }
+					value={ getNumber( height ) }
+					onChange={ setParam( 'height' ) }
+					type="number"
+					help={ __( 'Height of Slider (vertical direction only)' ) }
 				/>
 				<TextControl
 					label={ __( 'Transition Speed' ) }
