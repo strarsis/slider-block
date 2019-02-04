@@ -1,0 +1,26 @@
+version: "3"
+services:
+  wordpress:
+    image: "wordpress:${WP_VERSION:-5.0.3}-php${PHP_VERSION:-7.2}-apache"
+    depends_on:
+      - mysql
+    environment:
+      WORDPRESS_DB_HOST: "mysql"
+      WORDPRESS_DB_NAME: "wordpress"
+      WORDPRESS_DB_PASSWORD: "testing"
+      WORDPRESS_DB_USER: "root"
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_CONFIG_EXTRA: |
+        define( 'WP_DEBUG', true );
+        define( 'SAVEQUERIES', true );
+        define( 'WP_DEFAULT_THEME', 'twentyseventeen' );
+    volumes:
+      - "./:/var/www/html/wp-content/plugins/slider-block"
+    restart: always
+    ports:
+      - 8080:80
+  mysql:
+    image: "mariadb:10.2"
+    environment:
+      MYSQL_DATABASE: "wordpress"
+      MYSQL_ROOT_PASSWORD: "testing"

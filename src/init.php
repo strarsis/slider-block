@@ -39,16 +39,24 @@ function slider_block_cgb_block_assets() {
 	// Scripts.
 	wp_enqueue_script(
 		'slider_block-swiper-js',
-		plugins_url( '/lib/swiper/swiper.js', dirname( __FILE__ ) ),
+		plugins_url( 'lib/swiper/swiper.js', dirname( __FILE__ ) ),
 		array(),
 		// filemtime( plugin_dir_path( __DIR__ ) . 'lib/swiper/min/swiper.min.js' ), // Version: filemtime — Gets file modification time.
 		true // Enqueue the script in the footer.
 	);
 
 	wp_enqueue_script(
+		'slider_block-swiper-helpers-js',
+		plugins_url( 'src/slider/swiper-helpers.js', dirname( __FILE__ ) ),
+		array( 'lodash', 'slider_block-swiper-js' ),
+		// filemtime( plugin_dir_path( __DIR__ ) . 'src/slider/front.build.js' ), // Version: filemtime — Gets file modification time.
+		true // Enqueue the script in the footer.
+	);
+
+	wp_enqueue_script(
 		'slider_block-front-js',
 		plugins_url( 'src/slider/front.js', dirname( __FILE__ ) ),
-		array( 'slider_block-swiper-js' ),
+		array( 'slider_block-swiper-helpers-js' ),
 		// filemtime( plugin_dir_path( __DIR__ ) . 'src/slider/front.build.js' ), // Version: filemtime — Gets file modification time.
 		true // Enqueue the script in the footer.
 	);

@@ -7,13 +7,7 @@
 
 .wp-block-cgb-block-slider-block  {
 
-	// some min-height so the slider doesn't collapse right away
-	&,
-	.editor-block-list__layout {
-		min-height: 12rem;
-	}
-
-	.editor-block-list__layout {
-		border: 0.2rem solid grey; 
+	&.empty {
+		min-height: 480px;
 	}
 }

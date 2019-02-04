@@ -1,60 +1,27 @@
 /**
  * BLOCK: slider-block
  *
- * Registering a basic block with Gutenberg.
- * Simple block, renders and saves the same content without any interactivity.
+ * Slider Block
  */
 
-//  Import CSS.
+/**
+ * Import CSS.
+ */
 import './style.scss';
 import './editor.scss';
 
-
 /**
- * External dependencies
+ * Internal dependencies
  */
-import { times } from 'lodash';
-import memoize from 'memize';
-import React from 'react';
-import Swiper from 'react-id-swiper';
+import { edit, save } from './slider';
 
 /**
  * WordPress dependencies
  */
-const { __, sprintf }       = wp.i18n;
+const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { PanelBody, RangeControl } = wp.components;
-const { Fragment } = wp.element;
-const {
-	InspectorControls,
-	InnerBlocks,
-} = wp.editor;
 
-
-/**
- * Returns the layouts configuration for a given number of slides.
- *
- * @param {number} slides Number of slides.
- *
- * @return {Object[]} Slides layout configuration.
- */
-const getColumnLayouts = memoize( ( slides ) => {
-	return times( slides, ( n ) => ( {
-		name: `slide-${ n + 1 } swiper-slide`,
-		label: sprintf( __( 'Slide %d' ), n + 1 ),
-		icon: 'slide',
-	} ) );
-} );
-
-
-// fix (pagination doesn't update when swiper.update() is called by react wrapper)
-var sliderRef = React.createRef();
-const updateSlider = function() {
-	if(!sliderRef || !sliderRef.current) return;
-	sliderRef.current.swiper.pagination.update();
-	sliderRef.current.swiper.pagination.render();
-};
-
+const validAlignments = [ 'wide', 'full' ];
 
 /**
  * Register: aa Gutenberg Block.
@@ -69,108 +36,157 @@ const updateSlider = function() {
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'cgb/block-slider-block', {
+registerBlockType( 'slider-block/slider', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __( 'Slider' ), // Block title.
 	icon: 'images-alt2', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'layout', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	keywords: [
-		__( 'slider-block — CGB Block' ),
+		__( 'Swiper' ),
 		__( 'Slider' ),
-		__( 'create-guten-block' ),
 	],
 	attributes: {
+		align: {
+			type: 'string',
+			default: 'wide',
+		},
 		slides: {
 			type: 'number',
-			default: 2,
+			default: 1,
+		},
+		params: {
+			type: 'array',
+			source: 'query',
+			selector: '.swiper-container',
+			query: {
+				withNavigation: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-withnavigation',
+				},
+				withPagination: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-withpagination',
+				},
+				dynamicBullets: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-dynamicbullets',
+				},
+				paginationType: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-paginationtype',
+				},
+				withScrollBar: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-withscrollbar',
+				},
+				direction: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-direction',
+				},
+				height: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-height',
+				},
+				speed: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-speed',
+				},
+				spaceBetween: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-spacebetween',
+				},
+				slidesPerView: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-slidesperview',
+				},
+				centeredSlides: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-centeredslides',
+				},
+				freeMode: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-freemode',
+				},
+				grabCursor: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-grabcursor',
+				},
+				loop: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-loop',
+				},
+				effect: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-effect',
+				},
+				mousewheel: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-mousewheel',
+				},
+				withAutoplay: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-withautoplay',
+				},
+				delay: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-delay',
+				},
+				disableOnInteraction: {
+					type: 'string',
+					source: 'attribute',
+					attribute: 'data-disableoninteraction',
+				},
+			},
+			default: [ {
+				withNavigation: false,
+				withPagination: true,
+				dynamicBullets: false,
+				paginationType: 'bullets',
+				withScrollBar: false,
+				direction: 'horizontal',
+				height: 480,
+				speed: 300,
+				spaceBetween: 0,
+				slidesPerView: 1,
+				centeredSlides: false,
+				freeMode: false,
+				grabCursor: false,
+				loop: false,
+				effect: 'slide',
+				mousewheel: false,
+				withAutoplay: false,
+				delay: 3000,
+				disableOnInteraction: true,
+			} ],
 		},
 	},
 	supports: {
-		align: [ 'wide', 'full' ],
+		align: validAlignments,
 	},
-
-	/**
-	 * The edit function describes the structure of your block in the context of the editor.
-	 * This represents what the editor will render when the block is used.
-	 *
-	 * The "edit" property must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 */
-	edit( { attributes, setAttributes, className } ) {
-		const { slides } = attributes;
-
-
-		const params = {
-			shouldSwiperUpdate: true,
-
-			loop: true,
-
-			navigation: {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev'
-			},
-			pagination: {
-				el: '.swiper-pagination',
-				type: 'bullets',
-				clickable: true
-			},
-
-
-			touchRatio: 0 // make content clickable in admin
+	getEditWrapperProps( attributes ) {
+		const { align } = attributes;
+		if ( -1 !== validAlignments.indexOf( align ) ) {
+			return { 'data-align': align };
 		}
-
-		return (
-			<Fragment>
-				<InspectorControls>
-					<PanelBody>
-						<RangeControl
-							label={ __( 'Slides' ) }
-							value={ slides }
-							onChange={ ( nextSlides ) => {
-								setAttributes( {
-									slides: nextSlides,
-								} );
-							} }
-							min={ 1 }
-						/>
-					</PanelBody>
-				</InspectorControls>
-				<div className={ className }>
-					<Swiper ref={ sliderRef } {...params}>
-						<InnerBlocks
-							onChange={ updateSlider() }
-							layouts={ getColumnLayouts( slides ) } />
-					</Swiper>
-				</div>
-			</Fragment>
-		);
 	},
-
-	/**
-	 * The save function defines the way in which the different attributes should be combined
-	 * into the final markup, which is then serialized by Gutenberg into post_content.
-	 *
-	 * The "save" property must be specified and must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 */
-	save( { attributes } ) {
-		return (
-			<div className={ attributes.className }>
-				<div className="swiper-container">
-					<div className="swiper-wrapper">
-						<InnerBlocks.Content />
-					</div>
-
-					<div className="swiper-pagination"></div>
-
-					<div className="swiper-button-prev"></div>
-					<div className="swiper-button-next"></div>
-
-					<div className="swiper-scrollbar"></div>
-				</div>
-			</div>
-		);
-	},
+	edit,
+	save,
 } );
